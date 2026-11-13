@@ -236,7 +236,7 @@
       let selectedFile = null;
 
       function setStatus(message) { status.textContent = 'Status: ' + message; }
-      function updateSendButton() { sendButton.disabled = !characteristic || !selectedFile; }
+      function updateSendButton() { sendButton.disabled = !selectedFile; }
 
       connectButton.addEventListener('click', async () => {
         if (!navigator.bluetooth) {
@@ -247,7 +247,6 @@
           connectButton.disabled = true;
           setStatus('Looking for your ESP32-C3…');
 
-          // Bluefy-compatible configuration: do not combine filters with acceptAllDevices.
           const device = await navigator.bluetooth.requestDevice({
             acceptAllDevices: true,
             optionalServices: [SERVICE_UUID]
@@ -293,7 +292,11 @@
       }
 
       sendButton.addEventListener('click', async () => {
-        if (!characteristic || !selectedFile) return;
+        if (!selectedFile) return;
+        if (!characteristic) {
+          setStatus('Connect the ESP32 before sending the picture.');
+          return;
+        }
         const width = Number(document.getElementById('screenWidth').value);
         const height = Number(document.getElementById('screenHeight').value);
         if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 320 || height > 320) {
