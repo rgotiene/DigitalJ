@@ -100,6 +100,22 @@
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; }
     }
+  
+    .demo-panel { margin-top: 42px; padding: 26px; border: 1px solid rgba(182,243,107,.25); border-radius: 18px; background: var(--surface); }
+    .demo-panel h3 { margin: 0 0 8px; font-size: 21px; }
+    .demo-panel > p { color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .demo-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 18px; }
+    .demo-button { min-height: 46px; padding: 0 18px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--text); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .demo-button.primary { background: var(--accent); color: #11150d; border-color: var(--accent); }
+    .demo-button:disabled { opacity: .45; cursor: not-allowed; }
+    .demo-button:not(:disabled):hover { filter: brightness(1.08); }
+    .demo-settings { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+    .demo-settings label { display: grid; gap: 6px; color: var(--muted); font-size: 12px; }
+    .demo-settings input { width: 100px; padding: 10px; border: 1px solid var(--line); border-radius: 9px; background: #0b0d12; color: var(--text); font: inherit; }
+    .demo-status { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: #0b0d12; color: var(--muted); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+    .demo-preview { display: none; max-width: 180px; max-height: 180px; margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; object-fit: contain; background: #08090d; }
+    .demo-note { color: #c4c9d2 !important; font-size: 12px !important; }
+
   </style>
 </head>
 <body>
@@ -155,6 +171,36 @@
       </div>
     </section>
 
+
+    <section class="section" id="wearable-demo" aria-labelledby="demo-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">GRIXCEL wearable demo</p>
+            <h2 id="demo-title">Send an image<br>to your screen.</h2>
+          </div>
+          <p class="section-intro">Connect your ESP32-C3 from Bluefy, choose an image on your iPhone, and send it to the display.</p>
+        </div>
+        <div class="demo-panel">
+          <h3>ESP32 image transfer</h3>
+          <p>First connect to an ESP32 running the matching GRIXCEL BLE firmware. Keep the ESP32 powered on and nearby.</p>
+          <div class="demo-controls">
+            <button class="demo-button primary" id="connectButton" type="button">Connect ESP32</button>
+            <button class="demo-button" id="chooseButton" type="button">Choose Picture</button>
+            <input id="imageInput" type="file" accept="image/*" hidden>
+            <button class="demo-button primary" id="sendButton" type="button" disabled>Send to Screen</button>
+          </div>
+          <div class="demo-settings">
+            <label>Screen width (pixels)<input id="screenWidth" type="number" min="1" max="320" value="128"></label>
+            <label>Screen height (pixels)<input id="screenHeight" type="number" min="1" max="320" value="160"></label>
+          </div>
+          <img id="imagePreview" class="demo-preview" alt="Selected image preview">
+          <div id="transferStatus" class="demo-status" role="status" aria-live="polite">Status: Not connected. Connect your GRIXCEL-compatible ESP32 first.</div>
+          <p class="demo-note">Demo settings: RGB565 colour, 128 × 160 pixels by default. Change the dimensions to match your exact TFT module. The ESP32 firmware must use the GRIXCEL BLE service and image-packet format.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="statement" id="about" aria-labelledby="about-title">
       <div class="container">
         <div class="statement-inner">
@@ -175,5 +221,137 @@
       <span>© <span id="year">2026</span> GRIXCEL. Made with intention.</span>
     </div>
   </footer>
+
+  <script>
+    (() => {
+      const SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+      const WRITE_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+      const connectButton = document.getElementById('connectButton');
+      const chooseButton = document.getElementById('chooseButton');
+      const sendButton = document.getElementById('sendButton');
+      const imageInput = document.getElementById('imageInput');
+      const preview = document.getElementById('imagePreview');
+      const status = document.getElementById('transferStatus');
+      let characteristic = null;
+      let selectedFile = null;
+
+      function setStatus(message) { status.textContent = 'Status: ' + message; }
+      function updateSendButton() { sendButton.disabled = !characteristic || !selectedFile; }
+
+      connectButton.addEventListener('click', async () => {
+        if (!navigator.bluetooth) {
+          setStatus('Bluetooth is not available in this browser. Open this HTTPS page in Bluefy on your iPhone.');
+          return;
+        }
+        try {
+          connectButton.disabled = true;
+          setStatus('Looking for your ESP32-C3…');
+          const device = await navigator.bluetooth.requestDevice({
+            filters: [{ namePrefix: 'GRIXCEL' }],
+            optionalServices: [SERVICE_UUID]
+          });
+          device.addEventListener('gattserverdisconnected', () => {
+            characteristic = null;
+            updateSendButton();
+            setStatus('ESP32 disconnected. Tap Connect ESP32 to reconnect.');
+          });
+          setStatus('Connecting to ' + (device.name || 'your ESP32') + '…');
+          const server = await device.gatt.connect();
+          const service = await server.getPrimaryService(SERVICE_UUID);
+          characteristic = await service.getCharacteristic(WRITE_UUID);
+          setStatus('Connected to ' + (device.name || 'GRIXCEL') + '. Choose a picture.');
+          updateSendButton();
+        } catch (error) {
+          setStatus(error.name === 'NotFoundError' ? 'No device selected. Make sure the ESP32 is powered on and running GRIXCEL BLE firmware.' : error.message);
+        } finally {
+          connectButton.disabled = false;
+        }
+      });
+
+      chooseButton.addEventListener('click', () => imageInput.click());
+      imageInput.addEventListener('change', () => {
+        selectedFile = imageInput.files && imageInput.files[0] ? imageInput.files[0] : null;
+        if (selectedFile) {
+          preview.src = URL.createObjectURL(selectedFile);
+          preview.style.display = 'block';
+          setStatus('Picture selected: ' + selectedFile.name + '. Connect the ESP32 if you have not already.');
+        }
+        updateSendButton();
+      });
+
+      async function writePacket(bytes) {
+        if (characteristic.properties.write) {
+          await characteristic.writeValueWithResponse(bytes);
+        } else if (characteristic.properties.writeWithoutResponse) {
+          await characteristic.writeValueWithoutResponse(bytes);
+        } else {
+          throw new Error('The ESP32 BLE characteristic does not allow writing.');
+        }
+      }
+
+      sendButton.addEventListener('click', async () => {
+        if (!characteristic || !selectedFile) return;
+        const width = Number(document.getElementById('screenWidth').value);
+        const height = Number(document.getElementById('screenHeight').value);
+        if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 320 || height > 320) {
+          setStatus('Enter valid screen dimensions between 1 and 320 pixels.');
+          return;
+        }
+        try {
+          sendButton.disabled = true;
+          setStatus('Preparing image…');
+          const bitmap = await createImageBitmap(selectedFile);
+          const canvas = document.createElement('canvas');
+          canvas.width = width; canvas.height = height;
+          const context = canvas.getContext('2d', { willReadFrequently: true });
+          context.fillStyle = '#000000';
+          context.fillRect(0, 0, width, height);
+          const scale = Math.min(width / bitmap.width, height / bitmap.height);
+          const drawWidth = Math.max(1, Math.round(bitmap.width * scale));
+          const drawHeight = Math.max(1, Math.round(bitmap.height * scale));
+          context.drawImage(bitmap, Math.round((width - drawWidth) / 2), Math.round((height - drawHeight) / 2), drawWidth, drawHeight);
+          const rgba = context.getImageData(0, 0, width, height).data;
+          const rgb565 = new Uint8Array(width * height * 2);
+          for (let p = 0, q = 0; p < rgba.length; p += 4, q += 2) {
+            const r = rgba[p] >> 3, g = rgba[p + 1] >> 2, b = rgba[p + 2] >> 3;
+            const value = (r << 11) | (g << 5) | b;
+            rgb565[q] = value & 255;
+            rgb565[q + 1] = value >> 8;
+          }
+          bitmap.close();
+          const begin = new Uint8Array(9);
+          begin[0] = 1;
+          begin[1] = width & 255; begin[2] = width >> 8;
+          begin[3] = height & 255; begin[4] = height >> 8;
+          const total = rgb565.length;
+          begin[5] = total & 255; begin[6] = (total >> 8) & 255;
+          begin[7] = (total >> 16) & 255; begin[8] = (total >> 24) & 255;
+          setStatus('Sending image data…');
+          await writePacket(begin);
+          const payloadSize = 17;
+          const packetCount = Math.ceil(total / payloadSize);
+          for (let offset = 0, sequence = 0; offset < total; offset += payloadSize, sequence++) {
+            const length = Math.min(payloadSize, total - offset);
+            const packet = new Uint8Array(length + 3);
+            packet[0] = 2;
+            packet[1] = sequence & 255;
+            packet[2] = (sequence >> 8) & 255;
+            packet.set(rgb565.subarray(offset, offset + length), 3);
+            await writePacket(packet);
+            if (sequence % 100 === 0 || sequence === packetCount - 1) {
+              setStatus('Sending… ' + Math.round(((sequence + 1) / packetCount) * 100) + '%');
+            }
+          }
+          await writePacket(new Uint8Array([3]));
+          setStatus('Transfer sent. Your ESP32 firmware should now finish drawing the image.');
+        } catch (error) {
+          setStatus('Transfer failed: ' + error.message);
+        } finally {
+          updateSendButton();
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
