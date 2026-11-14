@@ -278,6 +278,7 @@
           device.addEventListener('gattserverdisconnected', () => {
             characteristic = null;
             updateSendButton();
+            setTransferState('ready', 'Ready');
             setStatus('ESP32 disconnected. Tap Connect ESP32 to reconnect.');
           });
           setStatus('Connecting to ' + (device.name || 'your ESP32') + '…');
@@ -287,6 +288,7 @@
           setStatus('Connected to ' + (device.name || 'GRIXCEL') + '. Choose a picture.');
           updateSendButton();
         } catch (error) {
+          setTransferState('failed', 'Failed');
           setStatus(error.name === 'NotFoundError' ? 'No device selected. Make sure the ESP32 is powered on and running GRIXCEL BLE firmware.' : error.message);
         } finally {
           connectButton.disabled = false;
@@ -310,9 +312,10 @@
       });
 
       async function writePacket(bytes) {
-        if (characteristic.properties.write) {
+        if (!characteristic) throw new Error('ESP32 is not connected.');
+        if (characteristic.properties && characteristic.properties.write) {
           await characteristic.writeValueWithResponse(bytes);
-        } else if (characteristic.properties.writeWithoutResponse) {
+        } else if (characteristic.properties && characteristic.properties.writeWithoutResponse) {
           await characteristic.writeValueWithoutResponse(bytes);
         } else {
           throw new Error('The ESP32 BLE characteristic does not allow writing.');
@@ -338,16 +341,55 @@
           setProgress(0);
           setTransferState('preparing', 'Preparing…');
           setStatus('Preparing image…');
-          const bitmap = await createImageBitmap(selectedFile);
+
+          let bitmap;
+          if (window.createImageBitmap) {
+            bitmap = await createImageBitmap(selectedFile);
+          } else {
+            const reader = new FileReader();
+            const dataUrl = await new Promise((resolve, reject) => {
+              reader.onload = () => resolve(reader.result);
+              reader.onerror = () => reject(new Error('Could not read the selected image.'));
+              reader.readAsDataURL(selectedFile);
+            });
+
+            const img = await new Promise((resolve, reject) => {
+              const image = new Image();
+              image.onload = () => resolve(image);
+              image.onerror = () => reject(new Error('The selected image could not be decoded.'));
+              image.src = dataUrl;
+            });
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const context = canvas.getContext('2d', { willReadFrequently: true });
+            context.fillStyle = '#000000';
+            context.fillRect(0, 0, width, height);
+            const scale = Math.min(width / img.width, height / img.height);
+            const drawWidth = Math.max(1, Math.round(img.width * scale));
+            const drawHeight = Math.max(1, Math.round(img.height * scale));
+            context.drawImage(img, Math.round((width - drawWidth) / 2), Math.round((height - drawHeight) / 2), drawWidth, drawHeight);
+            bitmap = { width: canvas.width, height: canvas.height, data: context.getImageData(0, 0, width, height).data };
+          }
+
           const canvas = document.createElement('canvas');
-          canvas.width = width; canvas.height = height;
+          canvas.width = width;
+          canvas.height = height;
           const context = canvas.getContext('2d', { willReadFrequently: true });
           context.fillStyle = '#000000';
           context.fillRect(0, 0, width, height);
-          const scale = Math.min(width / bitmap.width, height / bitmap.height);
-          const drawWidth = Math.max(1, Math.round(bitmap.width * scale));
-          const drawHeight = Math.max(1, Math.round(bitmap.height * scale));
-          context.drawImage(bitmap, Math.round((width - drawWidth) / 2), Math.round((height - drawHeight) / 2), drawWidth, drawHeight);
+
+          if (bitmap && bitmap.data) {
+            const imageData = new ImageData(new Uint8ClampedArray(bitmap.data), bitmap.width, bitmap.height);
+            context.putImageData(imageData, 0, 0);
+          } else {
+            const scale = Math.min(width / bitmap.width, height / bitmap.height);
+            const drawWidth = Math.max(1, Math.round(bitmap.width * scale));
+            const drawHeight = Math.max(1, Math.round(bitmap.height * scale));
+            context.drawImage(bitmap, Math.round((width - drawWidth) / 2), Math.round((height - drawHeight) / 2), drawWidth, drawHeight);
+          }
+
           const rgba = context.getImageData(0, 0, width, height).data;
           const rgb565 = new Uint8Array(width * height * 2);
           for (let p = 0, q = 0; p < rgba.length; p += 4, q += 2) {
@@ -356,7 +398,8 @@
             rgb565[q] = value & 255;
             rgb565[q + 1] = value >> 8;
           }
-          bitmap.close();
+          if (bitmap && typeof bitmap.close === 'function') { bitmap.close(); }
+
           const begin = new Uint8Array(9);
           begin[0] = 1;
           begin[1] = width & 255; begin[2] = width >> 8;
@@ -367,6 +410,7 @@
           setTransferState('sending', 'Sending…');
           setStatus('Sending image data…');
           await writePacket(begin);
+
           const payloadSize = 17;
           const packetCount = Math.ceil(total / payloadSize);
           for (let offset = 0, sequence = 0; offset < total; offset += payloadSize, sequence++) {
@@ -383,6 +427,7 @@
               setStatus('Sending… ' + Math.round(progress) + '%');
             }
           }
+
           await writePacket(new Uint8Array([3]));
           setProgress(100);
           setTransferState('passed', 'Passed');
@@ -392,6 +437,7 @@
           setStatus('Transfer failed: ' + error.message);
         } finally {
           updateSendButton();
+          sendButton.disabled = false;
         }
       });
     })();
