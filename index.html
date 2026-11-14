@@ -76,7 +76,7 @@
   <main id="top">
     <section class="hero container"><p class="eyebrow">A digital project by GRIXCEL</p><h1>Digital,<br>with <span>intention.</span></h1><p class="hero-copy">We believe the best digital experiences feel effortless. GRIXCEL brings thoughtful design and purposeful technology together to make every detail count.</p><div class="hero-actions"><a class="button button-primary" href="#approach">Discover our approach</a><a class="button button-secondary" href="https://github.com/rgotiene/DigitalJ">Explore the project</a></div><div class="hero-note">Thoughtfully made for what’s next</div></section>
     <section class="section" id="approach"><div class="container"><div class="section-heading"><div><p class="section-label">The GRIXCEL approach</p><h2>Make digital<br>feel simple.</h2></div><p class="section-intro">Clear thinking makes room for better ideas. We focus on the essentials, then bring them to life with care.</p></div><div class="grid"><article class="card"><span class="card-number">01 / CLARITY</span><h3>Start with purpose</h3><p>Every strong experience begins with understanding what matters and who it is for.</p></article><article class="card"><span class="card-number">02 / CRAFT</span><h3>Mind every detail</h3><p>From the first impression to the smallest interaction, the details shape how it feels.</p></article><article class="card"><span class="card-number">03 / ACCESS</span><h3>Built for everyone</h3><p>Responsible, readable, and easy to use — wherever you are and whatever device you choose.</p></article></div></div></section>
-    <section class="section" id="wearable-demo"><div class="container"><div class="section-heading"><div><p class="section-label">GRIXCEL wearable demo</p><h2>Send an image<br>to your screen.</h2></div><p class="section-intro">Connect your ESP32-C3 from Bluefy, choose an image on your iPhone, and send it to the display.</p></div><div class="demo-panel"><h3>ESP32 image transfer</h3><p>Connect an ESP32 running the matching GRIXCEL BLE firmware. Keep it powered on and nearby.</p><div class="demo-controls"><button class="demo-button primary" id="connectButton" type="button">Connect ESP32</button><button class="demo-button" id="chooseButton" type="button">Choose Picture</button><input id="imageInput" type="file" accept="image/*" hidden><button class="demo-button primary" id="sendButton" type="button" disabled>Send to Screen</button><output class="transfer-state" id="transferState" data-state="ready" aria-live="polite"></output></div><div class="transfer-progress"><label for="transferProgress">Transfer progress: <span id="transferProgressText">0%</span></label><progress id="transferProgress" max="100" value="0">0%</progress></div><div class="demo-settings"><label>Screen width (pixels)<input id="screenWidth" type="number" min="1" max="320" value="128"></label><label>Screen height (pixels)<input id="screenHeight" type="number" min="1" max="320" value="160"></label></div><img id="imagePreview" class="demo-preview" alt="Selected image preview"><div id="transferStatus" class="demo-status" role="status" aria-live="polite">Status: Not connected. Connect your ESP32 first.</div><p class="demo-note">RGB565 image transfer. ESP32 firmware must implement this page’s matching BLE UUIDs and packet protocol.</p></div></div></section>
+    <section class="section" id="wearable-demo"><div class="container"><div class="section-heading"><div><p class="section-label">GRIXCEL wearable demo</p><h2>Send an image<br>to your screen.</h2></div><p class="section-intro">Connect your ESP32-C3 from Bluefy, choose an image on your iPhone, and send it to the display.</p></div><div class="demo-panel"><h3>ESP32 image transfer</h3><p>Connect an ESP32 running the matching GRIXCEL BLE firmware. Keep it powered on and nearby.</p><div class="demo-controls"><button class="demo-button primary" id="connectButton" type="button">Connect ESP32</button><button class="demo-button" id="chooseButton" type="button">Choose Picture</button><input id="imageInput" type="file" accept="image/*" hidden><button class="demo-button primary" id="sendButton" type="button" disabled>Send to Screen</button><output class="transfer-state" id="transferState" data-state="ready" aria-live="polite"></output></div><div class="transfer-progress"><label for="transferProgress">Transfer progress: <span id="transferProgressText">0%</span></label><progress id="transferProgress" max="100" value="0">0%</progress></div><div class="demo-settings"><label>Screen width (pixels)<input id="screenWidth" type="number" min="1" max="320" value="240"></label><label>Screen height (pixels)<input id="screenHeight" type="number" min="1" max="320" value="240"></label></div><img id="imagePreview" class="demo-preview" alt="Selected image preview"><div id="transferStatus" class="demo-status" role="status" aria-live="polite">Status: Not connected. Connect your ESP32 first.</div><p class="demo-note">RGB565 image transfer. ESP32 firmware must implement this page’s matching BLE UUIDs and packet protocol.</p></div></div></section>
     <section class="statement" id="about"><div class="container"><div class="statement-inner"><div><p class="section-label">About GRIXCEL</p><h2>Good technology should feel human.</h2><p>A considered digital experience, designed to work beautifully on desktop and mobile.</p></div><a class="button button-primary" href="https://github.com/rgotiene/DigitalJ">See the project</a></div></div></section>
   </main>
   <footer class="site-footer"><div class="footer-inner container"><span class="footer-brand">GRIXCEL</span><span>© 2026 GRIXCEL. Made with intention.</span></div></footer>
@@ -118,7 +118,6 @@
         if (!urlVersion || !/^\d+$/.test(urlVersion)) localStorage.setItem(VERSION_STORAGE_KEY, String(next));
       }
       state('ready', 'Ready');
-
       connectButton.addEventListener('click', async () => {
         if (!navigator.bluetooth) { message('Web Bluetooth is unavailable in this browser.'); return; }
         try {
@@ -139,7 +138,6 @@
           message('Bluetooth connection failed: ' + (error.message || error.name));
         } finally { connectButton.disabled = false; }
       });
-
       chooseButton.addEventListener('click', () => imageInput.click());
       imageInput.addEventListener('change', () => {
         selectedFile = imageInput.files && imageInput.files[0] || null;
@@ -152,7 +150,6 @@
         } else { preview.style.display = 'none'; state('ready', 'Ready'); }
         updateButton();
       });
-
       async function decodeImage(file) {
         if (typeof window.createImageBitmap === 'function') return window.createImageBitmap(file);
         return new Promise((resolve, reject) => {
@@ -173,7 +170,6 @@
           throw new Error('Characteristic is not writable. Verify the ESP32 write UUID and firmware permissions.');
         } catch (error) { throw new Error((description || 'BLE write') + ': ' + (error.message || error.name)); }
       }
-
       sendButton.addEventListener('click', async () => {
         if (!selectedFile || busy) return;
         busy = true;
@@ -211,8 +207,6 @@
           header[3] = height & 255; header[4] = height >> 8;
           const total = pixels.length;
           header[5] = total & 255; header[6] = (total >> 8) & 255; header[7] = (total >> 16) & 255; header[8] = (total >> 24) & 255;
-
-          // Enter Sending after image preparation. Connection/write errors are reported from this phase.
           state('sending', 'Sending…');
           message('Sending image data…');
           await paint();
