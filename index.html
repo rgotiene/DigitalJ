@@ -68,24 +68,31 @@
     .transfer-progress progress::-moz-progress-bar { background:var(--accent); border-radius:999px; }
     .demo-preview { display:none; max-width:180px; max-height:180px; margin-top:16px; border:1px solid var(--line); border-radius:10px; object-fit:contain; }
     .demo-note { color:#c4c9d2!important; font-size:12px!important; }
-    @media(max-width:700px) { .container{width:min(100% - 40px,var(--max-width))}.nav{min-height:68px}.nav-links{gap:18px}.nav-links a:not(.nav-cta){display:none}.hero{padding:88px 0 78px}.hero-note{margin-top:58px}.section{padding:66px 0}.section-heading{display:block;margin-bottom:28px}.section-intro{margin-top:18px}.grid{grid-template-columns:1fr;gap:10px}.card{min-height:190px;padding:23px}.card h3{margin-top:32px}.statement{padding:54px 0 66px}.statement-inner,.footer-inner{align-items:flex-start;flex-direction:column}.demo-controls{align-items:stretch}.transfer-state{flex:1} }
+    @media(max-width:700px) { .container{width:min(100% - 40px,var(--max-width))}.nav{min-height:68px}.nav-links{gap:18px}.nav-links a:not(.nav-cta){display:none}.hero{padding:88px 0 78px}.hero-note{margin-top:58px}.section{padding:66px 0}.section-heading{display:block;margin-bottom:26px}.section-intro{margin-top:18px}.grid{grid-template-columns:1fr}.statement-inner,.footer-inner{align-items:flex-start;flex-direction:column}.demo-controls{align-items:stretch}.transfer-state{width:100%}.demo-settings{display:grid;grid-template-columns:1fr 1fr}.demo-settings input{width:100%} }
   </style>
 </head>
 <body>
-  <header class="site-header"><nav class="nav container" aria-label="Main navigation"><a class="brand" href="#top" aria-label="GRIXCEL home"><span class="brand-mark">G</span> GRIXCEL</a><div class="nav-links"><a href="#approach">Approach</a><a href="#about">About</a><a class="nav-cta" href="https://github.com/rgotiene/DigitalJ">View project ↗</a></div></nav></header>
+  <header class="site-header"><nav class="nav container" aria-label="Main navigation"><a class="brand" href="#top" aria-label="GRIXCEL home"><span class="brand-mark">G</span> GRIXCEL</a><div class="nav-links"><a href="#approach">Approach</a><a href="#about">About</a><a class="nav-cta" href="https://github.com/rgotiene/DigitalJ">View project</a></div></nav></header>
   <main id="top">
-    <section class="hero container"><p class="eyebrow">A digital project by GRIXCEL</p><h1>Digital,<br>with <span>intention.</span></h1><p class="hero-copy">We believe the best digital experiences feel effortless. GRIXCEL brings thoughtful design and purposeful technology together to make every detail count.</p><div class="hero-actions"><a class="button button-primary" href="#approach">Discover our approach ↓</a><a class="button button-secondary" href="https://github.com/rgotiene/DigitalJ">Explore the project ↗</a></div><div class="hero-note">Thoughtfully made for what’s next</div></section>
-    <section class="section" id="approach"><div class="container"><div class="section-heading"><div><p class="section-label">The GRIXCEL approach</p><h2>Make digital<br>feel simple.</h2></div><p class="section-intro">Clear thinking makes room for better ideas. We focus on the essentials, then bring them to life with care.</p></div><div class="grid"><article class="card"><span class="card-number">01 / CLARITY</span><h3>Start with purpose</h3><p>Every strong experience begins with understanding what matters and who it is for.</p></article><article class="card"><span class="card-number">02 / CRAFT</span><h3>Mind every detail</h3><p>From the first impression to the smallest interaction, the details shape how it feels.</p></article><article class="card"><span class="card-number">03 / ACCESS</span><h3>Built for everyone</h3><p>Responsive, readable, and easy to use—wherever you are and whatever device you choose.</p></article></div></div></section>
+    <section class="hero container"><p class="eyebrow">A digital project by GRIXCEL</p><h1>Digital,<br>with <span>intention.</span></h1><p class="hero-copy">We believe the best digital experiences feel effortless. GRIXCEL brings thoughtful design and purposeful technology together to make every detail count.</p><div class="hero-actions"><a class="button button-primary" href="#approach">Discover our approach</a><a class="button button-secondary" href="https://github.com/rgotiene/DigitalJ">Explore the project</a></div><div class="hero-note">Thoughtfully made for what’s next</div></section>
+    <section class="section" id="approach"><div class="container"><div class="section-heading"><div><p class="section-label">The GRIXCEL approach</p><h2>Make digital<br>feel simple.</h2></div><p class="section-intro">Clear thinking makes room for better ideas. We focus on the essentials, then bring them to life with care.</p></div><div class="grid"><article class="card"><span class="card-number">01 / CLARITY</span><h3>Start with purpose</h3><p>Every strong experience begins with understanding what matters and who it is for.</p></article><article class="card"><span class="card-number">02 / CRAFT</span><h3>Mind every detail</h3><p>From the first impression to the smallest interaction, the details shape how it feels.</p></article><article class="card"><span class="card-number">03 / ACCESS</span><h3>Built for everyone</h3><p>Responsible, readable, and easy to use — wherever you are and whatever device you choose.</p></article></div></div></section>
     <section class="section" id="wearable-demo"><div class="container"><div class="section-heading"><div><p class="section-label">GRIXCEL wearable demo</p><h2>Send an image<br>to your screen.</h2></div><p class="section-intro">Connect your ESP32-C3 from Bluefy, choose an image on your iPhone, and send it to the display.</p></div><div class="demo-panel"><h3>ESP32 image transfer</h3><p>Connect an ESP32 running the matching GRIXCEL BLE firmware. Keep it powered on and nearby.</p><div class="demo-controls"><button class="demo-button primary" id="connectButton" type="button">Connect ESP32</button><button class="demo-button" id="chooseButton" type="button">Choose Picture</button><input id="imageInput" type="file" accept="image/*" hidden><button class="demo-button primary" id="sendButton" type="button" disabled>Send to Screen</button><output class="transfer-state" id="transferState" data-state="ready" aria-live="polite"></output></div><div class="transfer-progress"><label for="transferProgress">Transfer progress: <span id="transferProgressText">0%</span></label><progress id="transferProgress" max="100" value="0">0%</progress></div><div class="demo-settings"><label>Screen width (pixels)<input id="screenWidth" type="number" min="1" max="320" value="128"></label><label>Screen height (pixels)<input id="screenHeight" type="number" min="1" max="320" value="160"></label></div><img id="imagePreview" class="demo-preview" alt="Selected image preview"><div id="transferStatus" class="demo-status" role="status" aria-live="polite">Status: Not connected. Connect your ESP32 first.</div><p class="demo-note">RGB565 image transfer. ESP32 firmware must implement this page’s matching BLE UUIDs and packet protocol.</p></div></div></section>
-    <section class="statement" id="about"><div class="container"><div class="statement-inner"><div><p class="section-label">About GRIXCEL</p><h2>Good technology should feel human.</h2><p>A considered digital experience, designed to work beautifully on desktop and mobile.</p></div><a class="button button-primary" href="https://github.com/rgotiene/DigitalJ">See the project ↗</a></div></div></section>
+    <section class="statement" id="about"><div class="container"><div class="statement-inner"><div><p class="section-label">About GRIXCEL</p><h2>Good technology should feel human.</h2><p>A considered digital experience, designed to work beautifully on desktop and mobile.</p></div><a class="button button-primary" href="https://github.com/rgotiene/DigitalJ">See the project</a></div></div></section>
   </main>
   <footer class="site-footer"><div class="footer-inner container"><span class="footer-brand">GRIXCEL</span><span>© 2026 GRIXCEL. Made with intention.</span></div></footer>
   <script>
     (() => {
       // Set to the release number for this deployed page. A ?v=NN URL overrides it for cache testing.
       const FALLBACK_VERSION = 11;
+      const VERSION_STORAGE_KEY = 'grixcel_release_version';
       const urlVersion = new URLSearchParams(location.search).get('v');
-      const version = urlVersion && /^\d+$/.test(urlVersion) ? urlVersion : String(FALLBACK_VERSION);
+      const storedVersion = Number.parseInt(localStorage.getItem(VERSION_STORAGE_KEY) || '', 10);
+      let version = urlVersion && /^\d+$/.test(urlVersion)
+        ? urlVersion
+        : Number.isFinite(storedVersion) && storedVersion > 0
+          ? String(storedVersion)
+          : String(FALLBACK_VERSION);
+
       // Must exactly match the service and writable characteristic in the ESP32 firmware.
       const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
       const WRITE_UUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
@@ -107,10 +114,24 @@
         if (typeof window.requestAnimationFrame === 'function') window.requestAnimationFrame(() => resolve());
         else setTimeout(resolve, 50);
       });
-      function state(name, text) { stateBox.dataset.state = name; stateBox.textContent = `Grixcel v.${version} : ${text}`; }
+
+      function state(name, text) {
+        stateBox.dataset.state = name;
+        stateBox.textContent = `Grixcel v.${version} : ${text}`;
+      }
+
       function message(text) { status.textContent = 'Status: ' + text; }
       function progress(value) { const n = Math.max(0, Math.min(100, value)); progressBar.value = n; progressText.textContent = Math.floor(n) + '%'; }
       function updateButton() { sendButton.disabled = !selectedFile || busy; }
+      function persistVersion(nextVersion) {
+        const next = Number.parseInt(nextVersion, 10);
+        if (!Number.isFinite(next) || next < 1) return;
+        version = String(next);
+        if (!urlVersion || !/^\d+$/.test(urlVersion)) {
+          localStorage.setItem(VERSION_STORAGE_KEY, String(next));
+        }
+      }
+
       state('ready', 'Ready');
 
       connectButton.addEventListener('click', async () => {
@@ -157,6 +178,7 @@
           image.src = url;
         });
       }
+
       async function writePacket(data, description) {
         if (!device || !device.gatt || !device.gatt.connected || !characteristic) throw new Error('ESP32 GATT is not connected. Reconnect using Connect ESP32.');
         const props = characteristic.properties || {};
@@ -175,42 +197,49 @@
         progress(0);
         state('preparing', 'Preparing…');
         message('Preparing image…');
-        // Hold each phase long enough to be visibly painted in Bluefy.
         await paint();
         await pause(900);
         let image = null;
         try {
           if (!characteristic || !device || !device.gatt || !device.gatt.connected) throw new Error('No active ESP32 GATT connection. Reconnect with Connect ESP32; a device selected in the picker is not enough.');
+
           const width = Number(document.getElementById('screenWidth').value);
           const height = Number(document.getElementById('screenHeight').value);
           if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 320 || height > 320) throw new Error('Screen width and height must be integers from 1 to 320.');
+
           image = await decodeImage(selectedFile);
           const canvas = document.createElement('canvas');
           canvas.width = width; canvas.height = height;
           const ctx = canvas.getContext('2d');
           if (!ctx) throw new Error('Could not create an image conversion canvas.');
           ctx.fillStyle = '#000'; ctx.fillRect(0, 0, width, height);
+
           const scale = Math.min(width / image.width, height / image.height);
           const w = Math.max(1, Math.round(image.width * scale));
           const h = Math.max(1, Math.round(image.height * scale));
           ctx.drawImage(image, Math.round((width - w) / 2), Math.round((height - h) / 2), w, h);
+
           const rgba = ctx.getImageData(0, 0, width, height).data;
           const pixels = new Uint8Array(width * height * 2);
           for (let p = 0, q = 0; p < rgba.length; p += 4, q += 2) {
             const value = ((rgba[p] >> 3) << 11) | ((rgba[p + 1] >> 2) << 5) | (rgba[p + 2] >> 3);
             pixels[q] = value & 255; pixels[q + 1] = value >> 8;
           }
+
           if (image && typeof image.close === 'function') image.close();
           image = null;
+
           const header = new Uint8Array(9);
           header[0] = 1; header[1] = width & 255; header[2] = width >> 8;
           header[3] = height & 255; header[4] = height >> 8;
           const total = pixels.length;
           header[5] = total & 255; header[6] = (total >> 8) & 255; header[7] = (total >> 16) & 255; header[8] = (total >> 24) & 255;
+
           state('sending', 'Sending…');
           message('Sending image data…');
           await paint();
           await pause(900);
+
           await writePacket(header, 'Transfer header write failed');
           const chunkBytes = 17;
           const count = Math.ceil(total / chunkBytes);
@@ -228,15 +257,26 @@
             }
             if (characteristic.properties.writeWithoutResponse) await pause(8);
           }
+
           await writePacket(new Uint8Array([3]), 'Transfer finish command failed');
           progress(100);
           state('passed', 'Passed');
-          message('All packets were written to the ESP32. Check the display.');
+          message('All packets were written to the ESP32. Updating version…');
+          await paint();
+          await pause(500);
+
+          const nextVersion = Number.parseInt(version, 10) + 1;
+          persistVersion(nextVersion);
+          state('ready', 'Ready');
+          message('Transfer completed. Version updated to v.' + version + '.');
         } catch (error) {
           if (image && typeof image.close === 'function') image.close();
           state('failed', 'Failed');
           message('Transfer failed: ' + (error.message || error.name));
-        } finally { busy = false; updateButton(); }
+        } finally {
+          busy = false;
+          updateButton();
+        }
       });
     })();
   </script>
