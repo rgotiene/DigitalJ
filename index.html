@@ -7,7 +7,7 @@
   <meta name="description" content="GRIXCEL creates thoughtful digital experiences with clarity, precision, and purpose.">
   <title>GRIXCEL — Digital, with intention.</title>
   <style>
-    :root { color-scheme: dark; --bg:#0b0d12; --surface:#12151d; --text:#f4f5f7; --muted:#a4a9b5; --line:rgba(255,255,255,.11); --accent:#b6f36b; --accent-dark:#182312; --max-width:1160px; }
+    :root { color-scheme:dark; --bg:#0b0d12; --surface:#12151d; --text:#f4f5f7; --muted:#a4a9b5; --line:rgba(255,255,255,.11); --accent:#b6f36b; --accent-dark:#182312; --max-width:1160px; }
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased; }
@@ -52,7 +52,7 @@
     .site-footer { padding:25px 0; border-top:1px solid var(--line); color:#858b97; font-size:12px; }
     .footer-inner { display:flex; justify-content:space-between; align-items:center; gap:20px; }
     .footer-brand { color:var(--text); font-weight:800; letter-spacing:.14em; }
-    @media(max-width:700px) { .container{width:min(100% - 40px,var(--max-width));}.nav{min-height:68px}.nav-links{gap:18px}.nav-links a:not(.nav-cta){display:none}.nav-cta{padding:10px 13px}.hero{padding:88px 0 78px}.hero::before{width:350px;height:350px;top:-190px;right:-160px}.hero-note{margin-top:58px}.section{padding:66px 0}.section-heading{display:block;margin-bottom:28px}.section-intro{margin-top:18px}.grid{grid-template-columns:1fr;gap:10px}.card{min-height:190px;padding:23px}.card h3{margin-top:32px}.statement{padding:54px 0 66px}.statement-inner{align-items:flex-start;flex-direction:column;padding:27px 23px}.footer-inner{align-items:flex-start;flex-direction:column;gap:9px}.demo-controls{align-items:stretch}.transfer-state{flex:1} }
+    @media(max-width:700px) { .container{width:min(100% - 40px,var(--max-width))}.nav{min-height:68px}.nav-links{gap:18px}.nav-links a:not(.nav-cta){display:none}.nav-cta{padding:10px 13px}.hero{padding:88px 0 78px}.hero::before{width:350px;height:350px;top:-190px;right:-160px}.hero-note{margin-top:58px}.section{padding:66px 0}.section-heading{display:block;margin-bottom:28px}.section-intro{margin-top:18px}.grid{grid-template-columns:1fr;gap:10px}.card{min-height:190px;padding:23px}.card h3{margin-top:32px}.statement{padding:54px 0 66px}.statement-inner{align-items:flex-start;flex-direction:column;padding:27px 23px}.footer-inner{align-items:flex-start;flex-direction:column;gap:9px}.demo-controls{align-items:stretch}.transfer-state{flex:1} }
     @media(prefers-reduced-motion:reduce) { html{scroll-behavior:auto} *,*::before,*::after{transition-duration:.01ms!important} }
     .demo-panel { margin-top:42px; padding:26px; border:1px solid rgba(182,243,107,.25); border-radius:18px; background:var(--surface); }
     .demo-panel h3 { margin:0 0 8px; font-size:21px; }
@@ -61,7 +61,7 @@
     .demo-button { min-height:46px; padding:0 18px; border:1px solid var(--line); border-radius:999px; background:transparent; color:var(--text); font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
     .demo-button.primary { background:var(--accent); color:#11150d; border-color:var(--accent); }
     .demo-button:disabled { opacity:.45; cursor:not-allowed; }
-    .transfer-state { min-width:112px; min-height:42px; display:inline-flex; align-items:center; justify-content:center; padding:0 14px; border:1px solid transparent; border-radius:999px; background:#30343b; color:#fff; font-size:12px; font-weight:700; transition:background-color .2s ease; }
+    .transfer-state { min-width:112px; min-height:42px; display:inline-flex; align-items:center; justify-content:center; padding:0 14px; border:1px solid transparent; border-radius:999px; color:#fff; font-size:12px; font-weight:700; }
     .transfer-state[data-state="ready"],.transfer-state[data-state="preparing"],.transfer-state[data-state="sending"] { background:#d6a900; color:#fff; }
     .transfer-state[data-state="passed"] { background:#188038; color:#fff; }
     .transfer-state[data-state="failed"] { background:#c62828; color:#fff; }
@@ -89,7 +89,7 @@
   <footer class="site-footer"><div class="footer-inner container"><span class="footer-brand">GRIXCEL</span><span>© <span id="year">2026</span> GRIXCEL. Made with intention.</span></div></footer>
   <script>
     (() => {
-      // These match the ESP32 UUIDs supplied in the user's firmware example.
+      // Must exactly match the service and writable characteristic in the ESP32 firmware.
       const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
       const WRITE_UUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
       const connectButton = document.getElementById('connectButton');
@@ -102,6 +102,7 @@
       const transferProgress = document.getElementById('transferProgress');
       const transferProgressText = document.getElementById('transferProgressText');
       let characteristic = null;
+      let device = null;
       let selectedFile = null;
       let busy = false;
 
@@ -109,14 +110,16 @@
       function setTransferState(state, label) { transferState.dataset.state = state; transferState.textContent = label; }
       function setProgress(percent) { const value = Math.max(0, Math.min(100, percent)); transferProgress.value = value; transferProgressText.textContent = Math.round(value) + '%'; }
       function updateSendButton() { sendButton.disabled = !selectedFile || busy; }
+      function pause(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
       connectButton.addEventListener('click', async () => {
         if (!navigator.bluetooth) { setTransferState('failed', 'Failed'); setStatus('Bluetooth is unavailable. Open this HTTPS page in a Web Bluetooth-compatible browser.'); return; }
         try {
           connectButton.disabled = true;
+          characteristic = null;
           setStatus('Looking for your ESP32…');
-          const device = await navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: [SERVICE_UUID] });
-          device.addEventListener('gattserverdisconnected', () => { characteristic = null; setTransferState('ready', 'Ready'); setStatus('ESP32 disconnected. Tap Connect ESP32 to reconnect.'); });
+          device = await navigator.bluetooth.requestDevice({ acceptAllDevices:true, optionalServices:[SERVICE_UUID] });
+          device.addEventListener('gattserverdisconnected', () => { characteristic = null; setStatus('ESP32 disconnected. Tap Connect ESP32 to reconnect.'); });
           setStatus('Connecting to ' + (device.name || 'your ESP32') + '…');
           const server = await device.gatt.connect();
           const service = await server.getPrimaryService(SERVICE_UUID);
@@ -143,14 +146,17 @@
         updateSendButton();
       });
 
-      async function writePacket(bytes) {
-        if (!characteristic) throw new Error('ESP32 GATT characteristic is not connected. Reconnect before sending.');
+      async function writePacket(bytes, label) {
+        if (!characteristic || !device || !device.gatt || !device.gatt.connected) throw new Error('ESP32 GATT connection is no longer active. Reconnect and try again.');
         const props = characteristic.properties || {};
-        // Bluefy versions vary: prefer modern methods, then fall back to the legacy writeValue API.
-        if (props.write && typeof characteristic.writeValueWithResponse === 'function') return characteristic.writeValueWithResponse(bytes);
-        if (props.writeWithoutResponse && typeof characteristic.writeValueWithoutResponse === 'function') return characteristic.writeValueWithoutResponse(bytes);
-        if ((props.write || props.writeWithoutResponse) && typeof characteristic.writeValue === 'function') return characteristic.writeValue(bytes);
-        throw new Error('The selected ESP32 characteristic does not support BLE writes. Check the firmware characteristic UUID and write permissions.');
+        try {
+          if (props.write && typeof characteristic.writeValueWithResponse === 'function') return await characteristic.writeValueWithResponse(bytes);
+          if (props.writeWithoutResponse && typeof characteristic.writeValueWithoutResponse === 'function') return await characteristic.writeValueWithoutResponse(bytes);
+          if ((props.write || props.writeWithoutResponse) && typeof characteristic.writeValue === 'function') return await characteristic.writeValue(bytes);
+          throw new Error('The selected characteristic is not writable. Verify the ESP32 characteristic UUID and write permissions.');
+        } catch (error) {
+          throw new Error((label || 'BLE write') + ' failed: ' + (error.message || error.name));
+        }
       }
 
       async function decodeImage(file) {
@@ -166,19 +172,21 @@
 
       sendButton.addEventListener('click', async () => {
         if (!selectedFile || busy) return;
-        if (!characteristic) { setTransferState('failed', 'Failed'); setStatus('ESP32 is not connected. Tap Connect ESP32 and connect to the device before sending.'); return; }
-        const width = Number(document.getElementById('screenWidth').value);
-        const height = Number(document.getElementById('screenHeight').value);
-        if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 320 || height > 320) { setTransferState('failed', 'Failed'); setStatus('Enter valid screen dimensions between 1 and 320 pixels.'); return; }
         busy = true;
         updateSendButton();
         setProgress(0);
+        setTransferState('preparing', 'Preparing…');
+        setStatus('Preparing image…');
+        // Allow Bluefy/iOS to paint the new state before image processing starts.
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        await pause(80);
+        let image = null;
         try {
-          setTransferState('preparing', 'Preparing…');
-          setStatus('Preparing image…');
-          // Yield so the browser paints the Preparing state before decoding/conversion.
-          await new Promise(resolve => setTimeout(resolve, 50));
-          const image = await decodeImage(selectedFile);
+          if (!characteristic || !device || !device.gatt || !device.gatt.connected) throw new Error('ESP32 is not connected. Tap Connect ESP32 and connect again before sending.');
+          const width = Number(document.getElementById('screenWidth').value);
+          const height = Number(document.getElementById('screenHeight').value);
+          if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 320 || height > 320) throw new Error('Enter valid screen dimensions between 1 and 320 pixels.');
+          image = await decodeImage(selectedFile);
           const canvas = document.createElement('canvas');
           canvas.width = width; canvas.height = height;
           const context = canvas.getContext('2d');
@@ -188,18 +196,19 @@
           const drawWidth = Math.max(1, Math.round(image.width * scale));
           const drawHeight = Math.max(1, Math.round(image.height * scale));
           context.drawImage(image, Math.round((width - drawWidth) / 2), Math.round((height - drawHeight) / 2), drawWidth, drawHeight);
-          if (typeof image.close === 'function') image.close();
           const rgba = context.getImageData(0, 0, width, height).data;
           const rgb565 = new Uint8Array(width * height * 2);
           for (let p = 0, q = 0; p < rgba.length; p += 4, q += 2) { const r = rgba[p] >> 3, g = rgba[p + 1] >> 2, b = rgba[p + 2] >> 3; const value = (r << 11) | (g << 5) | b; rgb565[q] = value & 255; rgb565[q + 1] = value >> 8; }
+          if (typeof image.close === 'function') image.close();
+          image = null;
           const begin = new Uint8Array(9);
           begin[0] = 1; begin[1] = width & 255; begin[2] = width >> 8; begin[3] = height & 255; begin[4] = height >> 8;
           const total = rgb565.length;
           begin[5] = total & 255; begin[6] = (total >> 8) & 255; begin[7] = (total >> 16) & 255; begin[8] = (total >> 24) & 255;
           setTransferState('sending', 'Sending…');
           setStatus('Sending image data…');
-          await new Promise(resolve => setTimeout(resolve, 30));
-          await writePacket(begin);
+          await new Promise(resolve => requestAnimationFrame(resolve));
+          await writePacket(begin, 'Transfer header');
           const payloadSize = 17;
           const packetCount = Math.ceil(total / payloadSize);
           for (let offset = 0, sequence = 0; offset < total; offset += payloadSize, sequence++) {
@@ -207,16 +216,19 @@
             const packet = new Uint8Array(length + 3);
             packet[0] = 2; packet[1] = sequence & 255; packet[2] = (sequence >> 8) & 255;
             packet.set(rgb565.subarray(offset, offset + length), 3);
-            await writePacket(packet);
+            await writePacket(packet, 'Image packet ' + (sequence + 1) + '/' + packetCount);
             const progress = ((sequence + 1) / packetCount) * 100;
             setProgress(progress);
-            if (sequence % 20 === 0 || sequence === packetCount - 1) { setStatus('Sending… ' + Math.round(progress) + '%'); }
+            if (sequence % 20 === 0 || sequence === packetCount - 1) setStatus('Sending image data… ' + Math.round(progress) + '% (' + (sequence + 1) + '/' + packetCount + ' packets)');
+            // A short gap helps some BLE stacks avoid overlapping GATT writes.
+            if (characteristic.properties.writeWithoutResponse && sequence % 8 === 7) await pause(10);
           }
-          await writePacket(new Uint8Array([3]));
+          await writePacket(new Uint8Array([3]), 'Transfer-complete command');
           setProgress(100);
           setTransferState('passed', 'Passed');
-          setStatus('Transfer sent successfully. The ESP32 should finish drawing the image.');
+          setStatus('All image packets were written. Confirm the ESP32 display updated.');
         } catch (error) {
+          if (image && typeof image.close === 'function') image.close();
           setTransferState('failed', 'Failed');
           setStatus('Transfer failed: ' + (error.message || error.name));
         } finally { busy = false; updateSendButton(); }
