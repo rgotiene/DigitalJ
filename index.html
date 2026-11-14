@@ -7,78 +7,9 @@
   <meta name="description" content="GRIXCEL creates thoughtful digital experiences with clarity, precision, and purpose.">
   <title>GRIXCEL — Digital, with intention.</title>
   <style>
-    :root { color-scheme:dark; --bg:#0b0d12; --surface:#12151d; --text:#f4f5f7; --muted:#a4a9b5; --line:rgba(255,255,255,.11); --accent:#b6f36b; --max-width:1160px; }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased; }
-    a { color:inherit; text-decoration:none; }
-    .container { width:min(var(--max-width),calc(100% - 48px)); margin-inline:auto; }
-    .site-header { border-bottom:1px solid var(--line); }
-    .nav { min-height:78px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
-    .brand { display:inline-flex; align-items:center; gap:11px; font-size:15px; font-weight:800; letter-spacing:.16em; }
-    .brand-mark { width:28px; height:28px; display:grid; place-items:center; border-radius:8px; background:var(--accent); color:#10150b; }
-    .nav-links { display:flex; align-items:center; gap:32px; color:var(--muted); font-size:13px; }
-    .nav-cta { padding:11px 16px; border:1px solid var(--line); border-radius:999px; }
-    .hero { position:relative; overflow:hidden; padding:112px 0 106px; }
-    .hero:before { content:""; position:absolute; width:520px; height:520px; top:-245px; right:-40px; border-radius:50%; background:radial-gradient(circle,rgba(182,243,107,.14),transparent 60%); }
-    .eyebrow,.section-label { color:var(--accent); font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
-    .eyebrow { display:inline-flex; gap:9px; }
-    .eyebrow:before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
-    h1 { max-width:820px; margin:24px 0 22px; font-size:clamp(52px,8.5vw,102px); line-height:.98; letter-spacing:-.075em; }
-    h1 span { color:var(--accent); }
-    .hero-copy { max-width:560px; color:var(--muted); font-size:clamp(16px,2vw,19px); line-height:1.7; }
-    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
-    .button { min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:0 20px; border:1px solid transparent; border-radius:999px; font-size:13px; font-weight:700; }
-    .button-primary { background:var(--accent); color:#11150d; }
-    .button-secondary { border-color:var(--line); }
-    .hero-note { margin-top:76px; color:#777e8b; font-size:11px; letter-spacing:.11em; text-transform:uppercase; }
-    .section { padding:88px 0; border-top:1px solid var(--line); }
-    .section-heading { display:flex; justify-content:space-between; align-items:end; gap:32px; margin-bottom:38px; }
-    .section-label { margin:0 0 14px; }
-    h2 { margin:0; font-size:clamp(32px,5vw,52px); line-height:1.08; letter-spacing:-.055em; }
-    .section-intro { max-width:365px; color:var(--muted); font-size:14px; line-height:1.75; }
-    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-    .card { min-height:230px; padding:26px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012)); }
-    .card-number { color:var(--accent); font-size:11px; font-weight:700; letter-spacing:.12em; }
-    .card h3 { margin:47px 0 10px; }
-    .card p { color:var(--muted); font-size:13px; line-height:1.7; }
-    .statement { padding:75px 0 90px; }
-    .statement-inner { display:flex; align-items:center; justify-content:space-between; gap:36px; padding:38px; border:1px solid rgba(182,243,107,.2); border-radius:18px; }
-    .site-footer { padding:25px 0; border-top:1px solid var(--line); color:#858b97; font-size:12px; }
-    .footer-inner { display:flex; justify-content:space-between; gap:20px; }
-    .demo-panel { margin-top:42px; padding:26px; border:1px solid rgba(182,243,107,.25); border-radius:18px; background:var(--surface); }
-    .demo-panel h3 { margin:0 0 8px; font-size:21px; }
-    .demo-panel>p { color:var(--muted); font-size:13px; line-height:1.65; }
-    .demo-controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:18px; }
-    .demo-button { min-height:46px; padding:0 18px; border:1px solid var(--line); border-radius:999px; background:transparent; color:var(--text); font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
-    .demo-button.primary { background:var(--accent); color:#11150d; border-color:var(--accent); }
-    .demo-button:disabled { opacity:.45; cursor:not-allowed; }
-    .transfer-state { min-width:170px; min-height:42px; display:inline-flex; align-items:center; justify-content:center; padding:0 14px; border-radius:999px; color:#fff; font-size:12px; font-weight:700; background:#b58d00; }
-    .transfer-state[data-state="ready"],.transfer-state[data-state="preparing"],.transfer-state[data-state="sending"] { background:#b58d00; color:#fff; }
-    .transfer-state[data-state="passed"] { background:#188038; color:#fff; }
-    .transfer-state[data-state="failed"] { background:#c62828; color:#fff; }
-    .demo-settings { display:flex; flex-wrap:wrap; gap:14px; margin-top:18px; }
-    .demo-settings label { display:grid; gap:6px; color:var(--muted); font-size:12px; }
-    .demo-settings input,.demo-settings select,.speed-select { min-height:42px; padding:9px 11px; border:1px solid var(--line); border-radius:9px; background:#0b0d12; color:var(--text); font:inherit; }
-    .demo-settings input { width:100px; }
-    .crop-editor { display:none; width:min(100%,300px); margin-top:20px; }
-    .crop-title { margin:0 0 10px; color:var(--text); font-size:13px; font-weight:700; }
-    .crop-frame { position:relative; width:min(100%,240px); aspect-ratio:1; margin:0 auto; overflow:hidden; border:2px solid var(--accent); border-radius:50%; background:#050609; touch-action:none; cursor:grab; box-shadow:0 0 0 1px rgba(182,243,107,.16),0 0 30px rgba(182,243,107,.08); }
-    .crop-frame:active { cursor:grabbing; }
-    .crop-frame img { position:absolute; top:50%; left:50%; max-width:none; user-select:none; -webkit-user-drag:none; pointer-events:none; }
-    .crop-caption { margin:9px 0 0; color:var(--muted); text-align:center; font-size:11px; line-height:1.5; }
-    .crop-controls { display:grid; gap:8px; margin-top:14px; }
-    .crop-controls label { display:grid; grid-template-columns:78px 1fr 38px; gap:8px; align-items:center; color:var(--muted); font-size:12px; }
-    .crop-controls input { width:100%; accent-color:var(--accent); }
-    .crop-controls output { text-align:right; color:var(--text); }
-    .demo-status { margin-top:16px; padding:12px 14px; border-radius:10px; background:#0b0d12; color:var(--muted); font-size:13px; line-height:1.5; overflow-wrap:anywhere; }
-    .transfer-progress { display:grid; gap:7px; width:100%; margin-top:10px; color:var(--muted); font-size:12px; }
-    .transfer-progress progress { display:block; width:100%; height:14px; appearance:none; -webkit-appearance:none; }
-    .transfer-progress progress::-webkit-progress-bar { background:#0b0d12; border-radius:999px; }
-    .transfer-progress progress::-webkit-progress-value { background:var(--accent); border-radius:999px; }
-    .transfer-progress progress::-moz-progress-bar { background:var(--accent); border-radius:999px; }
-    .demo-note { color:#c4c9d2!important; font-size:12px!important; }
-    @media(max-width:700px) { .container{width:min(100% - 40px,var(--max-width))}.nav{min-height:68px}.nav-links{gap:18px}.nav-links a:not(.nav-cta){display:none}.hero{padding:88px 0 78px}.hero-note{margin-top:58px}.section{padding:66px 0}.section-heading{display:block;margin-bottom:26px}.section-intro{margin-top:18px}.grid{grid-template-columns:1fr}.statement-inner,.footer-inner{align-items:flex-start;flex-direction:column}.demo-controls{align-items:stretch}.transfer-state{width:100%}.demo-settings{display:grid;grid-template-columns:1fr 1fr}.demo-settings input{width:100%}.demo-settings .speed-setting{grid-column:1/-1}.demo-settings select{width:100%}.crop-editor{margin-inline:auto} }
+    :root{color-scheme:dark;--bg:#0b0d12;--surface:#12151d;--text:#f4f5f7;--muted:#a4a9b5;--line:rgba(255,255,255,.11);--accent:#b6f36b;--max-width:1160px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}.container{width:min(var(--max-width),calc(100% - 48px));margin-inline:auto}.site-header{border-bottom:1px solid var(--line)}.nav{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:inline-flex;align-items:center;gap:11px;font-size:15px;font-weight:800;letter-spacing:.16em}.brand-mark{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:var(--accent);color:#10150b}.nav-links{display:flex;align-items:center;gap:32px;color:var(--muted);font-size:13px}.nav-cta{padding:11px 16px;border:1px solid var(--line);border-radius:999px}.hero{position:relative;overflow:hidden;padding:112px 0 106px}.hero:before{content:"";position:absolute;width:520px;height:520px;top:-245px;right:-40px;border-radius:50%;background:radial-gradient(circle,rgba(182,243,107,.14),transparent 60%)}.eyebrow,.section-label{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}.eyebrow{display:inline-flex;gap:9px}.eyebrow:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}h1{max-width:820px;margin:24px 0 22px;font-size:clamp(52px,8.5vw,102px);line-height:.98;letter-spacing:-.075em}h1 span{color:var(--accent)}.hero-copy{max-width:560px;color:var(--muted);font-size:clamp(16px,2vw,19px);line-height:1.7}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}.button{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 20px;border:1px solid transparent;border-radius:999px;font-size:13px;font-weight:700}.button-primary{background:var(--accent);color:#11150d}.button-secondary{border-color:var(--line)}.hero-note{margin-top:76px;color:#777e8b;font-size:11px;letter-spacing:.11em;text-transform:uppercase}.section{padding:88px 0;border-top:1px solid var(--line)}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:38px}.section-label{margin:0 0 14px}h2{margin:0;font-size:clamp(32px,5vw,52px);line-height:1.08;letter-spacing:-.055em}.section-intro{max-width:365px;color:var(--muted);font-size:14px;line-height:1.75}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{min-height:230px;padding:26px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))}.card-number{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.12em}.card h3{margin:47px 0 10px}.card p{color:var(--muted);font-size:13px;line-height:1.7}.statement{padding:75px 0 90px}.statement-inner{display:flex;align-items:center;justify-content:space-between;gap:36px;padding:38px;border:1px solid rgba(182,243,107,.2);border-radius:18px}.site-footer{padding:25px 0;border-top:1px solid var(--line);color:#858b97;font-size:12px}.footer-inner{display:flex;justify-content:space-between;gap:20px}.demo-panel{margin-top:42px;padding:26px;border:1px solid rgba(182,243,107,.25);border-radius:18px;background:var(--surface)}.demo-panel h3{margin:0 0 8px;font-size:21px}.demo-panel>p{color:var(--muted);font-size:13px;line-height:1.65}.demo-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}.demo-button{min-height:46px;padding:0 18px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.demo-button.primary{background:var(--accent);color:#11150d;border-color:var(--accent)}.demo-button:disabled{opacity:.45;cursor:not-allowed}.transfer-state{min-width:170px;min-height:42px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;border-radius:999px;color:#fff;font-size:12px;font-weight:700;background:#b58d00}.transfer-state[data-state=ready],.transfer-state[data-state=preparing],.transfer-state[data-state=sending]{background:#b58d00;color:#fff}.transfer-state[data-state=passed]{background:#188038;color:#fff}.transfer-state[data-state=failed]{background:#c62828;color:#fff}.demo-settings{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px}.demo-settings label{display:grid;gap:6px;color:var(--muted);font-size:12px}.demo-settings input,.speed-select{min-height:42px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#0b0d12;color:var(--text);font:inherit}.demo-settings input{width:100px}.crop-editor{display:none;width:min(100%,300px);margin-top:20px}.crop-title{margin:0 0 10px;color:var(--text);font-size:13px;font-weight:700}.crop-frame{position:relative;width:min(100%,240px);aspect-ratio:1;margin:0 auto;overflow:hidden;border:2px solid var(--accent);border-radius:50%;background:#050609;touch-action:none;cursor:grab}.crop-frame:active{cursor:grabbing}.crop-frame img{position:absolute;left:50%;top:50%;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}.crop-caption{margin:9px 0 0;color:var(--muted);text-align:center;font-size:11px;line-height:1.5}.crop-controls{margin-top:14px}.crop-controls label{display:grid;grid-template-columns:78px 1fr 38px;gap:8px;align-items:center;color:var(--muted);font-size:12px}.crop-controls input{width:100%;accent-color:var(--accent)}.crop-controls output{text-align:right;color:var(--text)}.demo-status{margin-top:16px;padding:12px 14px;border-radius:10px;background:#0b0d12;color:var(--muted);font-size:13px;line-height:1.5;overflow-wrap:anywhere}.transfer-progress{display:grid;gap:7px;width:100%;margin-top:10px;color:var(--muted);font-size:12px}.transfer-progress progress{display:block;width:100%;height:14px;appearance:none;-webkit-appearance:none}.transfer-progress progress::-webkit-progress-bar{background:#0b0d12;border-radius:999px}.transfer-progress progress::-webkit-progress-value,.transfer-progress progress::-moz-progress-bar{background:var(--accent);border-radius:999px}.demo-note{color:#c4c9d2!important;font-size:12px!important}
+    @media(max-width:700px){.container{width:min(100% - 40px,var(--max-width))}.nav{min-height:68px}.nav-links{gap:18px}.nav-links a:not(.nav-cta){display:none}.hero{padding:88px 0 78px}.hero-note{margin-top:58px}.section{padding:66px 0}.section-heading{display:block;margin-bottom:26px}.section-intro{margin-top:18px}.grid{grid-template-columns:1fr}.statement-inner,.footer-inner{align-items:flex-start;flex-direction:column}.demo-controls{align-items:stretch}.transfer-state{width:100%}.demo-settings{display:grid;grid-template-columns:1fr 1fr}.demo-settings input{width:100%}.speed-setting{grid-column:1/-1}.speed-select{width:100%}.crop-editor{margin-inline:auto}}
   </style>
 </head>
 <body>
@@ -86,7 +17,7 @@
   <main id="top">
     <section class="hero container"><p class="eyebrow">A digital project by GRIXCEL</p><h1>Digital,<br>with <span>intention.</span></h1><p class="hero-copy">We believe the best digital experiences feel effortless. GRIXCEL brings thoughtful design and purposeful technology together to make every detail count.</p><div class="hero-actions"><a class="button button-primary" href="#approach">Discover our approach</a><a class="button button-secondary" href="https://github.com/rgotiene/DigitalJ">Explore the project</a></div><div class="hero-note">Thoughtfully made for what’s next</div></section>
     <section class="section" id="approach"><div class="container"><div class="section-heading"><div><p class="section-label">The GRIXCEL approach</p><h2>Make digital<br>feel simple.</h2></div><p class="section-intro">Clear thinking makes room for better ideas. We focus on the essentials, then bring them to life with care.</p></div><div class="grid"><article class="card"><span class="card-number">01 / CLARITY</span><h3>Start with purpose</h3><p>Every strong experience begins with understanding what matters and who it is for.</p></article><article class="card"><span class="card-number">02 / CRAFT</span><h3>Mind every detail</h3><p>From the first impression to the smallest interaction, the details shape how it feels.</p></article><article class="card"><span class="card-number">03 / ACCESS</span><h3>Built for everyone</h3><p>Responsible, readable, and easy to use — wherever you are and whatever device you choose.</p></article></div></div></section>
-    <section class="section" id="wearable-demo"><div class="container"><div class="section-heading"><div><p class="section-label">GRIXCEL wearable demo</p><h2>Send an image<br>to your screen.</h2></div><p class="section-intro">Connect your ESP32-C3 from Bluefy, choose an image on your iPhone, crop it to the circular LCD, then send it over Bluetooth.</p></div><div class="demo-panel"><h3>ESP32 image transfer</h3><p>Connect an ESP32 running the matching GRIXCEL BLE firmware. The round crop preview shows the visible 240 × 240 GC9A01 screen area. Drag the image to reposition it or adjust zoom.</p><div class="demo-controls"><button class="demo-button primary" id="connectButton" type="button">Connect ESP32</button><button class="demo-button" id="chooseButton" type="button">Choose Picture</button><input id="imageInput" type="file" accept="image/*" hidden><button class="demo-button primary" id="sendButton" type="button" disabled>Send to Screen</button><label class="speed-setting" style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px">Transfer time<select class="speed-select" id="transferDuration" aria-label="Target transfer time"><option value="60000">1 min</option><option value="120000">2 mins</option><option value="180000">3 mins</option><option value="240000">4 mins</option><option value="300000">5 mins</option><option value="360000">6 mins</option><option value="420000">7 mins</option><option value="480000">8 mins</option><option value="540000">9 mins</option><option value="600000" selected>10 mins</option></select></label><output class="transfer-state" id="transferState" data-state="ready" aria-live="polite"></output></div><div class="transfer-progress"><label for="transferProgress">Transfer progress: <span id="transferProgressText">0%</span></label><progress id="transferProgress" max="100" value="0">0%</progress></div><div class="demo-settings"><label>Screen width (pixels)<input id="screenWidth" type="number" min="1" max="320" value="240"></label><label>Screen height (pixels)<input id="screenHeight" type="number" min="1" max="320" value="240"></label></div><div class="crop-editor" id="cropEditor"><p class="crop-title">Circular screen preview — drag to position</p><div class="crop-frame" id="cropFrame" role="img" aria-label="Circular crop preview. Drag to reposition the image"><img id="imagePreview" alt=""></div><p class="crop-caption">The circle is the visible LCD area. Image outside the circle is cropped; no letterbox bars are added.</p><div class="crop-controls"><label for="zoomControl">Zoom<input id="zoomControl" type="range" min="1" max="3" step="0.01" value="1"><output id="zoomValue">1.00×</output></label></div></div><div id="transferStatus" class="demo-status" role="status" aria-live="polite">Status: Not connected. Connect your ESP32 first.</div><p class="demo-note">RGB565 image transfer. ESP32 firmware must implement this page’s matching BLE UUIDs and packet protocol. Selected transfer time is a target; actual duration depends on BLE/browser write speed.</p></div></div></section>
+    <section class="section" id="wearable-demo"><div class="container"><div class="section-heading"><div><p class="section-label">GRIXCEL wearable demo</p><h2>Send an image<br>to your screen.</h2></div><p class="section-intro">Connect your ESP32-C3 from Bluefy, choose an image on your iPhone, crop it to the circular LCD, then send it over Bluetooth.</p></div><div class="demo-panel"><h3>ESP32 image transfer</h3><p>Connect an ESP32 running the matching GRIXCEL BLE firmware. The round crop preview shows the 240 × 240 GC9A01 screen area. Drag to reposition, then zoom to frame the picture.</p><div class="demo-controls"><button class="demo-button primary" id="connectButton" type="button">Connect ESP32</button><button class="demo-button" id="chooseButton" type="button">Choose Picture</button><input id="imageInput" type="file" accept="image/*" hidden><button class="demo-button primary" id="sendButton" type="button" disabled>Send to Screen</button><label class="speed-setting" style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px">Transfer time<select class="speed-select" id="transferDuration" aria-label="Target transfer time"><option value="60000">1 min</option><option value="120000">2 mins</option><option value="180000">3 mins</option><option value="240000">4 mins</option><option value="300000">5 mins</option><option value="360000">6 mins</option><option value="420000">7 mins</option><option value="480000">8 mins</option><option value="540000">9 mins</option><option value="600000" selected>10 mins</option></select></label><output class="transfer-state" id="transferState" data-state="ready" aria-live="polite"></output></div><div class="transfer-progress"><label for="transferProgress">Transfer progress: <span id="transferProgressText">0%</span></label><progress id="transferProgress" max="100" value="0">0%</progress></div><div class="demo-settings"><label>Screen width (pixels)<input id="screenWidth" type="number" min="1" max="320" value="240"></label><label>Screen height (pixels)<input id="screenHeight" type="number" min="1" max="320" value="240"></label></div><div class="crop-editor" id="cropEditor"><p class="crop-title">Circular screen preview — drag to position</p><div class="crop-frame" id="cropFrame" role="img" aria-label="Circular crop preview. Drag to reposition the image"><img id="imagePreview" alt=""></div><p class="crop-caption">The circle is the visible LCD area. The image is cropped to fill it, without bars.</p><div class="crop-controls"><label for="zoomControl">Zoom<input id="zoomControl" type="range" min="1" max="3" step="0.01" value="1"><output id="zoomValue">1.00×</output></label></div></div><div id="transferStatus" class="demo-status" role="status" aria-live="polite">Status: Not connected. Connect your ESP32 first.</div><p class="demo-note">RGB565 transfer over BLE. Configure ESP32 firmware to support write-without-response and compatible packet sizes for faster transfer.</p></div></div></section>
     <section class="statement" id="about"><div class="container"><div class="statement-inner"><div><p class="section-label">About GRIXCEL</p><h2>Good technology should feel human.</h2><p>A considered digital experience, designed to work beautifully on desktop and mobile.</p></div><a class="button button-primary" href="https://github.com/rgotiene/DigitalJ">See the project</a></div></div></section>
   </main>
   <footer class="site-footer"><div class="footer-inner container"><span class="footer-brand">GRIXCEL</span><span>© 2026 GRIXCEL. Made with intention.</span></div></footer>
@@ -100,214 +31,120 @@
       let version = urlVersion && /^\d+$/.test(urlVersion) ? urlVersion : Number.isFinite(storedVersion) && storedVersion > 0 ? String(storedVersion) : String(FALLBACK_VERSION);
       const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
       const WRITE_UUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
-      const connectButton = document.getElementById('connectButton');
-      const chooseButton = document.getElementById('chooseButton');
-      const sendButton = document.getElementById('sendButton');
-      const imageInput = document.getElementById('imageInput');
-      const preview = document.getElementById('imagePreview');
-      const cropFrame = document.getElementById('cropFrame');
-      const cropEditor = document.getElementById('cropEditor');
-      const zoomControl = document.getElementById('zoomControl');
-      const zoomValue = document.getElementById('zoomValue');
-      const status = document.getElementById('transferStatus');
-      const stateBox = document.getElementById('transferState');
-      const progressBar = document.getElementById('transferProgress');
-      const progressText = document.getElementById('transferProgressText');
-      const durationControl = document.getElementById('transferDuration');
-      let characteristic = null;
-      let device = null;
-      let selectedFile = null;
-      let busy = false;
-      let zoom = 1;
-      let panX = 0;
-      let panY = 0;
-      let drag = null;
+      const $ = id => document.getElementById(id);
+      const connectButton = $('connectButton'), chooseButton = $('chooseButton'), sendButton = $('sendButton'), imageInput = $('imageInput');
+      const preview = $('imagePreview'), cropFrame = $('cropFrame'), cropEditor = $('cropEditor'), zoomControl = $('zoomControl'), zoomValue = $('zoomValue');
+      const status = $('transferStatus'), stateBox = $('transferState'), progressBar = $('transferProgress'), progressText = $('transferProgressText'), durationControl = $('transferDuration');
+      let characteristic = null, device = null, selectedFile = null, busy = false, zoom = 1, panX = 0, panY = 0, drag = null;
       const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
-      const paint = () => new Promise(resolve => {
-        if (typeof window.requestAnimationFrame === 'function') window.requestAnimationFrame(() => resolve());
-        else setTimeout(resolve, 50);
-      });
+      const paint = () => new Promise(resolve => typeof requestAnimationFrame === 'function' ? requestAnimationFrame(resolve) : setTimeout(resolve, 50));
       const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
       function state(name, text) { stateBox.dataset.state = name; stateBox.textContent = `Grixcel v.${version} : ${text}`; }
       function message(text) { status.textContent = 'Status: ' + text; }
-      function progress(value) { const n = Math.max(0, Math.min(100, value)); progressBar.value = n; progressText.textContent = Math.floor(n) + '%'; }
+      function progress(value) { const n = clamp(value, 0, 100); progressBar.value = n; progressText.textContent = Math.floor(n) + '%'; }
       function updateButton() { sendButton.disabled = !selectedFile || busy; }
-      function persistVersion(nextVersion) {
-        const next = Number.parseInt(nextVersion, 10);
-        if (!Number.isFinite(next) || next < 1) return;
+      function bumpVersion() {
+        const next = Number.parseInt(version, 10) + 1;
         version = String(next);
-        if (!urlVersion || !/^\d+$/.test(urlVersion)) { try { localStorage.setItem(VERSION_STORAGE_KEY, String(next)); } catch (_) {} }
+        if (!urlVersion || !/^\d+$/.test(urlVersion)) { try { localStorage.setItem(VERSION_STORAGE_KEY, version); } catch (_) {} }
       }
       function cropGeometry(width, height, imageWidth, imageHeight) {
         const scale = Math.max(width / imageWidth, height / imageHeight) * zoom;
-        const sourceWidth = width / scale;
-        const sourceHeight = height / scale;
-        const maxPanX = Math.max(0, (imageWidth - sourceWidth) / 2 * scale);
-        const maxPanY = Math.max(0, (imageHeight - sourceHeight) / 2 * scale);
-        panX = clamp(panX, -maxPanX, maxPanX);
-        panY = clamp(panY, -maxPanY, maxPanY);
-        const sx = clamp((imageWidth - sourceWidth) / 2 - panX / scale, 0, imageWidth - sourceWidth);
-        const sy = clamp((imageHeight - sourceHeight) / 2 - panY / scale, 0, imageHeight - sourceHeight);
-        return { scale, sourceWidth, sourceHeight, sx, sy, maxPanX, maxPanY };
+        const sourceWidth = width / scale, sourceHeight = height / scale;
+        const maxPanX = Math.max(0, (imageWidth - sourceWidth) * scale / 2), maxPanY = Math.max(0, (imageHeight - sourceHeight) * scale / 2);
+        panX = clamp(panX, -maxPanX, maxPanX); panY = clamp(panY, -maxPanY, maxPanY);
+        return {scale, sourceWidth, sourceHeight, sx:clamp((imageWidth - sourceWidth) / 2 - panX / scale, 0, imageWidth - sourceWidth), sy:clamp((imageHeight - sourceHeight) / 2 - panY / scale, 0, imageHeight - sourceHeight)};
       }
       function updateCropPreview() {
         if (!selectedFile || !preview.naturalWidth) return;
-        const size = cropFrame.clientWidth || 240;
-        const g = cropGeometry(size, size, preview.naturalWidth, preview.naturalHeight);
-        preview.style.width = (preview.naturalWidth * g.scale) + 'px';
-        preview.style.height = (preview.naturalHeight * g.scale) + 'px';
-        preview.style.transform = `translate(-50%, -50%) translate(${panX}px, ${panY}px)`;
-        zoomValue.textContent = zoom.toFixed(2) + '×';
+        const size = cropFrame.clientWidth || 240, g = cropGeometry(size, size, preview.naturalWidth, preview.naturalHeight);
+        preview.style.width = (preview.naturalWidth * g.scale) + 'px'; preview.style.height = (preview.naturalHeight * g.scale) + 'px';
+        preview.style.transform = `translate(-50%, -50%) translate(${panX}px, ${panY}px)`; zoomValue.textContent = zoom.toFixed(2) + '×';
       }
       state('ready', 'Ready');
-
       connectButton.addEventListener('click', async () => {
         if (!navigator.bluetooth) { message('Web Bluetooth is unavailable in this browser.'); return; }
         try {
-          connectButton.disabled = true;
-          characteristic = null;
-          message('Choose your ESP32 in the Bluetooth picker…');
+          connectButton.disabled = true; characteristic = null; message('Choose your ESP32 in the Bluetooth picker…');
           device = await navigator.bluetooth.requestDevice({acceptAllDevices:true, optionalServices:[SERVICE_UUID]});
           device.addEventListener('gattserverdisconnected', () => { characteristic = null; message('ESP32 disconnected. Reconnect before sending.'); });
           message('Connecting to ' + (device.name || 'ESP32') + '…');
-          const server = await device.gatt.connect();
-          const service = await server.getPrimaryService(SERVICE_UUID);
-          characteristic = await service.getCharacteristic(WRITE_UUID);
-          state('ready', 'Ready');
-          message('Connected to ' + (device.name || 'ESP32') + '. Select an image.');
-        } catch (error) {
-          characteristic = null;
-          state('failed', 'Failed');
-          message('Bluetooth connection failed: ' + (error.message || error.name));
-        } finally { connectButton.disabled = false; }
+          const server = await device.gatt.connect(), service = await server.getPrimaryService(SERVICE_UUID);
+          characteristic = await service.getCharacteristic(WRITE_UUID); state('ready', 'Ready'); message('Connected to ' + (device.name || 'ESP32') + '. Select an image.');
+        } catch (error) { characteristic = null; state('failed', 'Failed'); message('Bluetooth connection failed: ' + (error.message || error.name)); }
+        finally { connectButton.disabled = false; }
       });
-
       chooseButton.addEventListener('click', () => imageInput.click());
       imageInput.addEventListener('change', () => {
         selectedFile = imageInput.files && imageInput.files[0] || null;
-        if (!selectedFile) { cropEditor.style.display = 'none'; updateButton(); state('ready', 'Ready'); return; }
+        if (!selectedFile) { cropEditor.style.display = 'none'; progress(0); state('ready', 'Ready'); updateButton(); return; }
         panX = 0; panY = 0; zoom = 1; zoomControl.value = '1';
         preview.onload = () => { cropEditor.style.display = 'block'; updateCropPreview(); };
-        preview.src = URL.createObjectURL(selectedFile);
-        progress(0);
-        state('ready', 'Ready');
-        message('Image selected: ' + selectedFile.name + '. Drag the image inside the circle to frame it.');
-        updateButton();
+        preview.src = URL.createObjectURL(selectedFile); progress(0); state('ready', 'Ready');
+        message('Image selected: ' + selectedFile.name + '. Drag the image inside the circle to frame it.'); updateButton();
       });
       zoomControl.addEventListener('input', () => { zoom = Number(zoomControl.value); updateCropPreview(); });
-      cropFrame.addEventListener('pointerdown', event => {
-        if (!selectedFile) return;
-        drag = { id:event.pointerId, x:event.clientX, y:event.clientY, panX, panY };
-        cropFrame.setPointerCapture(event.pointerId);
-        event.preventDefault();
-      });
-      cropFrame.addEventListener('pointermove', event => {
-        if (!drag || drag.id !== event.pointerId) return;
-        panX = drag.panX + event.clientX - drag.x;
-        panY = drag.panY + event.clientY - drag.y;
-        updateCropPreview();
-      });
+      cropFrame.addEventListener('pointerdown', event => { if (!selectedFile) return; drag = {id:event.pointerId,x:event.clientX,y:event.clientY,panX,panY}; cropFrame.setPointerCapture(event.pointerId); event.preventDefault(); });
+      cropFrame.addEventListener('pointermove', event => { if (!drag || drag.id !== event.pointerId) return; panX = drag.panX + event.clientX - drag.x; panY = drag.panY + event.clientY - drag.y; updateCropPreview(); });
       const stopDrag = event => { if (drag && drag.id === event.pointerId) drag = null; };
-      cropFrame.addEventListener('pointerup', stopDrag);
-      cropFrame.addEventListener('pointercancel', stopDrag);
-      window.addEventListener('resize', updateCropPreview);
-
+      cropFrame.addEventListener('pointerup', stopDrag); cropFrame.addEventListener('pointercancel', stopDrag); window.addEventListener('resize', updateCropPreview);
       async function decodeImage(file) {
         if (typeof window.createImageBitmap === 'function') return window.createImageBitmap(file);
-        return new Promise((resolve, reject) => {
-          const image = new Image();
-          const url = URL.createObjectURL(file);
-          image.onload = () => { URL.revokeObjectURL(url); resolve(image); };
-          image.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Bluefy could not decode this image. Try JPEG or PNG.')); };
-          image.src = url;
-        });
+        return new Promise((resolve, reject) => { const image = new Image(), url = URL.createObjectURL(file); image.onload = () => { URL.revokeObjectURL(url); resolve(image); }; image.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not decode this image. Try JPEG or PNG.')); }; image.src = url; });
       }
       async function writePacket(data, description) {
         if (!device || !device.gatt || !device.gatt.connected || !characteristic) throw new Error('ESP32 GATT is not connected. Reconnect using Connect ESP32.');
         const props = characteristic.properties || {};
         try {
-          if (props.write && typeof characteristic.writeValueWithResponse === 'function') return await characteristic.writeValueWithResponse(data);
           if (props.writeWithoutResponse && typeof characteristic.writeValueWithoutResponse === 'function') return await characteristic.writeValueWithoutResponse(data);
+          if (props.write && typeof characteristic.writeValueWithResponse === 'function') return await characteristic.writeValueWithResponse(data);
           if ((props.write || props.writeWithoutResponse) && typeof characteristic.writeValue === 'function') return await characteristic.writeValue(data);
-          throw new Error('Characteristic is not writable. Verify the ESP32 write UUID and firmware permissions.');
+          throw new Error('Characteristic is not writable. Verify ESP32 write UUID and firmware permissions.');
         } catch (error) { throw new Error((description || 'BLE write') + ': ' + (error.message || error.name)); }
       }
-
       sendButton.addEventListener('click', async () => {
         if (!selectedFile || busy) return;
-        busy = true;
-        updateButton();
-        progress(0);
-        state('preparing', 'Preparing…');
-        message('Preparing circular image crop…');
-        await paint();
-        await pause(500);
+        busy = true; updateButton(); progress(0); state('preparing', 'Preparing…'); message('Preparing circular image crop…'); await paint();
         let image = null;
         try {
-          const width = Number(document.getElementById('screenWidth').value);
-          const height = Number(document.getElementById('screenHeight').value);
+          const width = Number($('screenWidth').value), height = Number($('screenHeight').value);
           if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 320 || height > 320) throw new Error('Screen width and height must be integers from 1 to 320.');
           image = await decodeImage(selectedFile);
-          const canvas = document.createElement('canvas');
-          canvas.width = width; canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          if (!ctx) throw new Error('Could not create an image conversion canvas.');
+          const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d'); if (!ctx) throw new Error('Could not create image conversion canvas.');
           const g = cropGeometry(width, height, image.width, image.height);
           ctx.drawImage(image, g.sx, g.sy, g.sourceWidth, g.sourceHeight, 0, 0, width, height);
-          const rgba = ctx.getImageData(0, 0, width, height).data;
-          const pixels = new Uint8Array(width * height * 2);
-          for (let p = 0, q = 0; p < rgba.length; p += 4, q += 2) {
-            const value = ((rgba[p] >> 3) << 11) | ((rgba[p + 1] >> 2) << 5) | (rgba[p + 2] >> 3);
-            pixels[q] = value & 255; pixels[q + 1] = value >> 8;
-          }
-          if (image && typeof image.close === 'function') image.close();
-          image = null;
-          const header = new Uint8Array(9);
-          header[0] = 1; header[1] = width & 255; header[2] = width >> 8;
-          header[3] = height & 255; header[4] = height >> 8;
-          const total = pixels.length;
+          const rgba = ctx.getImageData(0, 0, width, height).data, pixels = new Uint8Array(width * height * 2);
+          for (let p = 0, q = 0; p < rgba.length; p += 4, q += 2) { const value = ((rgba[p] >> 3) << 11) | ((rgba[p + 1] >> 2) << 5) | (rgba[p + 2] >> 3); pixels[q] = value & 255; pixels[q + 1] = value >> 8; }
+          if (image && typeof image.close === 'function') image.close(); image = null;
+          const header = new Uint8Array(9), total = pixels.length;
+          header[0] = 1; header[1] = width & 255; header[2] = width >> 8; header[3] = height & 255; header[4] = height >> 8;
           header[5] = total & 255; header[6] = (total >> 8) & 255; header[7] = (total >> 16) & 255; header[8] = (total >> 24) & 255;
-
-          state('sending', 'Sending…');
-          message('Sending image data…');
-          await paint();
-          const targetDuration = Number(durationControl.value);
-          const startTime = performance.now();
-          await pause(250);
-          if (!characteristic || !device || !device.gatt || !device.gatt.connected) throw new Error('No active ESP32 GATT connection. Reconnect with Connect ESP32; a device selected in the picker is not enough.');
+          state('sending', 'Sending…'); message('Sending image data…'); await paint();
+          if (!characteristic || !device || !device.gatt || !device.gatt.connected) throw new Error('No active ESP32 GATT connection. Reconnect with Connect ESP32.');
           await writePacket(header, 'Transfer header write failed');
-          const chunkBytes = 17;
-          const count = Math.ceil(total / chunkBytes);
-          const updateEvery = Math.max(1, Math.floor(count / 100));
+          const chunkBytes = 17, count = Math.ceil(total / chunkBytes), targetDuration = Number(durationControl.value), startTime = performance.now(), updateEvery = Math.max(1, Math.floor(count / 100));
           for (let offset = 0, sequence = 0; offset < total; offset += chunkBytes, sequence++) {
-            const length = Math.min(chunkBytes, total - offset);
-            const packet = new Uint8Array(length + 3);
-            packet[0] = 2; packet[1] = sequence & 255; packet[2] = (sequence >> 8) & 255;
-            packet.set(pixels.subarray(offset, offset + length), 3);
+            const length = Math.min(chunkBytes, total - offset), packet = new Uint8Array(length + 3);
+            packet[0] = 2; packet[1] = sequence & 255; packet[2] = (sequence >> 8) & 255; packet.set(pixels.subarray(offset, offset + length), 3);
             await writePacket(packet, `Packet ${sequence + 1}/${count} write failed`);
-            const pct = ((sequence + 1) / count) * 100;
-            progress(pct);
-            if (sequence % updateEvery === 0 || sequence === count - 1) {
-              message(`Sending image data… ${Math.floor(pct)}% (${sequence + 1}/${count} packets)`);
-              await paint();
-            }
-            const dueAt = startTime + targetDuration * ((sequence + 1) / count);
-            const waitForSlot = dueAt - performance.now();
+            const pct = ((sequence + 1) / count) * 100; progress(pct);
+            if (sequence % updateEvery === 0 || sequence === count - 1) { message(`Sending image data… ${Math.floor(pct)}% (${sequence + 1}/${count} packets)`); await paint(); }
+            const waitForSlot = startTime + targetDuration * ((sequence + 1) / count) - performance.now();
             if (waitForSlot > 0) await pause(waitForSlot);
           }
           await writePacket(new Uint8Array([3]), 'Transfer finish command failed');
           progress(100);
-          state('passed', 'Passed');
-          message('All packets were written to the ESP32. Updating version…');
+          bumpVersion();
+          state('passed', 'Succeeded');
+          message('Transfer succeeded.');
           await paint();
-          const next = Number.parseInt(version, 10) + 1;
-          persistVersion(next);
+          await pause(5000);
           state('ready', 'Ready');
-          message('Transfer completed. Version updated to v.' + version + '.');
+          message('Ready for another image.');
         } catch (error) {
           if (image && typeof image.close === 'function') image.close();
-          state('failed', 'Failed');
-          message('Transfer failed: ' + (error.message || error.name));
+          state('failed', 'Failed'); message('Transfer failed: ' + (error.message || error.name));
         } finally { busy = false; updateButton(); }
       });
     })();
